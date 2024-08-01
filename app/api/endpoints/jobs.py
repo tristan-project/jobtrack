@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from app.models.user import User
 from app.schemas.job import JobCreate, Job
 from app.crud.job import create_job, get_job, get_jobs
 from app.db.session import get_db
 from typing import List
+from app.api.dependencies import get_current_user
 
 router = APIRouter()
 
