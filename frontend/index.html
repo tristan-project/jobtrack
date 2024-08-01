@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Finder</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+<body>
+    <div x-data="jobs()" x-init="fetchJobs()">
+        <template x-for="job in jobs" :key="job.id">
+            <div>
+                <h2 x-text="job.title"></h2>
+                <p x-text="job.description"></p>
+            </div>
+        </template>
+    </div>
+</body>
+</html>
