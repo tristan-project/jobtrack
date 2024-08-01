@@ -2,7 +2,7 @@ fastapi==0.95.2            # The FastAPI framework
 uvicorn==0.22.0            # ASGI server for running FastAPI
 pydantic==1.10.2           # Data validation and settings management
 SQLAlchemy==2.0.18         # ORM for database interactions
-sqlite==3.36.0             # SQLite support, though this usually comes with Python
+sqlite==3.46.0             # SQLite support, though this usually comes with Python
 alembic==1.11.1            # Database migrations for SQLAlchemy
 passlib[bcrypt]==1.7.4     # Password hashing utilities
 python-jose==3.3.0         # JWT token generation and verification
