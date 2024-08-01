@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from app.schemas.user import User
 from app.crud.user import get_user_by_email
 from app.db.session import get_db
+from app.api.dependencies import get_current_user
+
 
 router = APIRouter()
 
