@@ -6,7 +6,7 @@ alembic==1.11.1            # Database migrations for SQLAlchemy
 passlib[bcrypt]==1.7.4     # Password hashing utilities
 python-jose==3.3.0         # JWT token generation and verification
 requests==2.31.0           # HTTP requests, useful for making API calls during tests
-pytest==5.4              # Testing framework
+pytest==7.0.0              # Testing framework
 pytest-asyncio==0.21.0     # Async support for pytest
 httpx==0.24.0              # HTTP client for making API requests (async)cd ..
 python-jose==3.3.0         # JWT token 
