@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-from app.schemas.user import User
-from app.crud.user import get_user_by_email
-from app.db.session import get_db
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from app.core.config import settings
+from app.db.base import Base
+from app.models.user import User  # Import all models here
 
-router = APIRouter()
+engine = create_engine(settings.SQLALCHEMY_DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-@router.get("/me", response_model=User)
-def read_users_me(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    return current_user
+def init_db():
+    Base.metadata.create_all(bind=engine)

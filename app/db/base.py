@@ -9,3 +9,8 @@ class Base:
     @declared_attr
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
+
+
+# from sqlalchemy.ext.declarative import declarative_base
+
+# Base = declarative_base()

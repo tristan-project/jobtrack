@@ -4,6 +4,7 @@ from datetime import datetime
 class JobBase(BaseModel):
     title: str
     description: str
+    owner_id: int
 
 class JobCreate(JobBase):
     pass

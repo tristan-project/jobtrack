@@ -4,6 +4,8 @@ from app.db.base import Base
 from datetime import datetime
 
 class Job(Base):
+    __tablename__ = "job"
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(String)
