@@ -14,6 +14,9 @@
     
     <div x-data="homepageData()" x-init="init()">
         <div id="welcome">Welcome to the homepage!</div>
+        <p>Token: <strong x-text="token"></strong></p>
+        <p>User ID: <strong x-text="userId"></strong></p>
+        <p>User Email: <strong x-text="userEmail"></strong></p>
 
         <form id="jobForm" x-data="jobFormData()">
             <h2>Create a Job</h2>
@@ -58,10 +61,12 @@
             Alpine.data('homepageData', () => ({
                 token: localStorage.getItem('jwtToken'),
                 userId: '',
+                userEmail: '',
+                owner_id: '',
                 jobs: [],
 
                 async fetchUserData() {
-                    const token = this.token;
+                    const token = localStorage.getItem('jwtToken');
                     if (!token) {
                         alert('No token found. Please login.');
                         window.location.href = '/static/auth/login.html';
@@ -78,6 +83,8 @@
                         if (response.ok) {
                             const data = await response.json();
                             this.userId = data.id;
+                            this.userEmail = data.email;
+                            this.owner_id = data.id.toString();
                         } else if (response.status === 401) {
                             alert('Invalid or expired token. Please login again.');
                             window.location.href = '/static/auth/login.html';
@@ -110,7 +117,7 @@
                 },
 
                 async deleteJob(jobId) {
-                    const token = this.token;
+                    const token = localStorage.getItem('jwtToken');
                     if (!token) {
                         alert('No token found. Please login.');
                         return;
@@ -155,7 +162,8 @@
 
                     const formData = {
                         title: this.title,
-                        description: this.description
+                        description: this.description,
+                        owner_id: this.owner_id // Correct reference to owner_id
                     };
 
                     try {
