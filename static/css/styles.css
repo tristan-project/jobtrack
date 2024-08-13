@@ -53,3 +53,41 @@ button:hover {
     background-color: #f8d7da;
     color: #721c24;
 }
+
+/* styles.css */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+nav ul li a:hover {
+    color: #007BFF;
+}
+
+h2 {
+    color: #333;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}

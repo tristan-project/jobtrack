@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body x-data="logoutData()" x-init="init()">
+    <h2>Logging out...</h2>
+    <p>You are being redirected to the login page.</p>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('logoutData', () => ({
+                async init() {
+                    // Clear the JWT token from local storage
+                    localStorage.removeItem('jwtToken');
+
+                    // Redirect to the login page
+                    window.location.href = '/static/auth/login.html';
+                }
+            }));
+        });
+    </script>
+</body>
+</html>

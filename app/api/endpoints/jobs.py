@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 from app.models.user import User
-from app.schemas.job import JobCreate, Job
-from app.crud.job import create_job, get_job, get_jobs
+from app.schemas.job import JobCreate, Job, JobUpdate
+from app.crud.job import create_job, get_job, get_job_by_id, get_jobs
 from app.db.session import get_db
 from typing import List
 from app.crud.user import get_current_user
@@ -44,3 +44,28 @@ def read_job(job_id: int, db: Session = Depends(get_db)):
 def read_jobs(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     jobs = get_jobs(db, skip=skip, limit=limit)
     return jobs
+
+@router.delete("/{job_id}", response_model=Job)
+def delete_job(job_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    job = get_job_by_id(db, job_id=job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail="Job not found")
+    if job.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this job")
+    db.delete(job)
+    db.commit()
+    return job
+
+@router.put("/{job_id}", response_model=Job)
+def update_job(job_id: int, job_update: JobUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    job = get_job_by_id(db, job_id=job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail="Job not found")
+    if job.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to update this job")
+    
+    job.title = job_update.title
+    job.description = job_update.description
+    db.commit()
+    db.refresh(job)
+    return job

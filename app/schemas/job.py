@@ -16,3 +16,8 @@ class Job(JobBase):
 
     class Config:
         orm_mode = True
+
+
+class JobUpdate(BaseModel):
+    title: str
+    description: str

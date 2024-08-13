@@ -34,3 +34,9 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
             detail="User not found",
         )
     return user
+
+def get_user_email(db: Session, owner_id: int) -> str:
+    user = db.query(User).filter(User.id == owner_id).first()
+    if user:
+        return user.email
+    return "email not found"

@@ -3,46 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Profile Page</title>
     <link rel="stylesheet" href="/static/css/styles.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
+
+    <!-- Navbar -->
     <div x-data="navbarData()" x-init="loadNavbar()"></div>
 
-    <h2>Homepage</h2>
-    
-    <div x-data="homepageData()" x-init="init()">
-        <div id="welcome">Welcome to the homepage!</div>
+    <h2>Profile Page</h2>
 
-        <form id="jobForm" x-data="jobFormData()">
-            <h2>Create a Job</h2>
-            <label for="title">Job Name:</label>
-            <input type="text" id="title" x-model="title" placeholder="Job name" required>
-            <br>
-            <label for="description">Description:</label>
-            <textarea id="description" x-model="description" placeholder="Description" required></textarea>
-            <br>
-            <button type="submit" x-on:click.prevent="submitJob">Create Job</button>
-        </form>
+    <!-- Profile Data Section -->
+    <div x-data="profileData()" x-init="init()">
+        <p>User ID: <strong x-text="userId"></strong></p>
+        <p>Email: <strong x-text="userEmail"></strong></p>
+        <p>Token: <strong x-text="token"></strong></p>
 
-        <div id="jobsList">
-            <h2>All Jobs</h2>
-            <ul>
-                <template x-for="job in jobs" :key="job.id">
-                    <li>
-                        <strong x-text="job.title"></strong>: <span x-text="job.description"></span>
-                        <p>Email: <strong x-text="job.user_email"></strong></p>
-                        <button x-show="job.owner_id === userId" x-on:click="window.location.href = `/static/app/edit-job.html?jobId=${job.id}`">Edit</button>
-                        <button x-show="job.owner_id === userId" x-on:click="deleteJob(job.id)">Delete</button>
-                    </li>
-                </template>
-            </ul>
-        </div>
+        <!-- User's Jobs Section -->
+        <h3>Your Jobs</h3>
+        <ul>
+            <template x-for="job in userJobs" :key="job.id">
+                <li>
+                    <strong x-text="job.title"></strong>: <span x-text="job.description"></span>
+                    <button x-on:click="editJob(job.id)">Edit</button>
+                    <button x-on:click="deleteJob(job.id)">Delete</button>
+                </li>
+            </template>
+        </ul>
     </div>
 
     <script>
         document.addEventListener('alpine:init', () => {
+            // Navbar loading component
             Alpine.data('navbarData', () => ({
                 async loadNavbar() {
                     try {
@@ -55,10 +48,12 @@
                 }
             }));
 
-            Alpine.data('homepageData', () => ({
+            // Profile page data component
+            Alpine.data('profileData', () => ({
                 token: localStorage.getItem('jwtToken'),
                 userId: '',
-                jobs: [],
+                userEmail: '',
+                userJobs: [],
 
                 async fetchUserData() {
                     const token = this.token;
@@ -78,6 +73,7 @@
                         if (response.ok) {
                             const data = await response.json();
                             this.userId = data.id;
+                            this.userEmail = data.email;
                         } else if (response.status === 401) {
                             alert('Invalid or expired token. Please login again.');
                             window.location.href = '/static/auth/login.html';
@@ -90,7 +86,7 @@
                     }
                 },
 
-                async fetchJobs() {
+                async fetchUserJobs() {
                     try {
                         const response = await fetch('/jobs', {
                             headers: {
@@ -99,7 +95,8 @@
                         });
 
                         if (response.ok) {
-                            this.jobs = await response.json();
+                            const jobs = await response.json();
+                            this.userJobs = jobs.filter(job => job.owner_id === this.userId);
                         } else {
                             alert('Failed to fetch jobs.');
                         }
@@ -126,7 +123,7 @@
 
                         if (response.ok) {
                             alert('Job deleted successfully!');
-                            this.fetchJobs(); // Refresh the job list after deletion
+                            this.fetchUserJobs(); // Refresh the job list after deletion
                         } else {
                             alert('Failed to delete job.');
                         }
@@ -136,49 +133,13 @@
                     }
                 },
 
+                editJob(jobId) {
+                    window.location.href = `/static/app/edit-job.html?jobId=${jobId}`;
+                },
+
                 init() {
                     this.fetchUserData();
-                    this.fetchJobs();
-                }
-            }));
-
-            Alpine.data('jobFormData', () => ({
-                title: '',
-                description: '',
-
-                async submitJob() {
-                    const token = localStorage.getItem('jwtToken');
-                    if (!token) {
-                        alert('No token found. Please login.');
-                        return;
-                    }
-
-                    const formData = {
-                        title: this.title,
-                        description: this.description
-                    };
-
-                    try {
-                        const response = await fetch('/jobs/createjob', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${token}`
-                            },
-                            body: JSON.stringify(formData)
-                        });
-
-                        if (response.ok) {
-                            alert('Job created successfully!');
-                            document.getElementById('jobForm').reset();
-                            this.fetchJobs(); // Refresh the job list after creation
-                        } else {
-                            alert('Failed to create job.');
-                        }
-                    } catch (error) {
-                        console.error('Error creating job:', error);
-                        alert('An error occurred.');
-                    }
+                    this.fetchUserJobs();
                 }
             }));
         });

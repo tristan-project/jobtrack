@@ -23,3 +23,4 @@ def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
 @router.get("/user-data", response_model=User)
 async def user_data(current_user: User = Depends(get_current_user)):
     return current_user
+

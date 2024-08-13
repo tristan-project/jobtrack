@@ -56,9 +56,9 @@ async def read_index():
     return FileResponse("static/auth/login.html")
 
 
-# @app.get("/auth/register.html")
-# async def read_index():
-#     return FileResponse("frontend/auth/register.html")
+@app.get("/auth/register.html")
+async def read_index():
+    return FileResponse("static/auth/register.html")
 
 
 
