@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+    <h2>Homepage</h2>
+    
+    <div x-data="homepageData()" x-init="init()">
+        <div id="welcome">Welcome to the homepage!</div>
+        <p>Token: <strong x-text="token"></strong></p>
+        <p>User ID: <strong x-text="userId"></strong></p>
+        <p>User Email: <strong x-text="userEmail"></strong></p>
+
+        <form id="jobForm" x-data="jobFormData()">
+            <h2>Create a Job</h2>
+            <label for="title">Job Name:</label>
+            <input type="text" id="title" x-model="title" placeholder="Job name" required>
+            <br>
+            <label for="description">Description:</label>
+            <textarea type="text" id="description" x-model="description" placeholder="Description" required></textarea>
+            <br>
+            <button type="submit" x-on:click.prevent="submitJob">Create Job</button>
+        </form>
+
+        <div id="jobsList">
+            <h2>All Jobs</h2>
+            <ul>
+                <template x-for="job in jobs" :key="job.id">
+                    <li>
+                        <strong x-text="job.title"></strong>: <span x-text="job.description"></span>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('homepageData', () => ({
+                token: localStorage.getItem('jwtToken'),
+                userId: '',
+                userEmail: '',
+                ownerId: '',
+
+
+                async fetchUserData() {
+                    const token = localStorage.getItem('jwtToken');
+                    if (!token) {
+                        alert('No token found. Please login.');
+                        window.location.href = '/static/auth/login.html';
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/users/me', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            this.userId = data.id;
+                            this.userEmail = data.email;
+                            // Set ownerId as well for job form
+                            this.owner_id = data.id.toString();
+                        } else if (response.status === 401) {
+                            alert('Invalid or expired token. Please login again.');
+                            window.location.href = '/static/auth/login.html';
+                        } else {
+                            alert('Failed to fetch user data.');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching user data:', error);
+                        alert('An error occurred.');
+                    }
+                },
+
+                async fetchJobs() {
+                    try {
+                        const response = await fetch('/jobs', {
+                            headers: {
+                                'Authorization': `Bearer ${this.token}`
+                            }
+                        });
+
+                        if (response.ok) {
+                            this.jobs = await response.json();
+                        } else {
+                            alert('Failed to fetch jobs.');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching jobs:', error);
+                        alert('An error occurred.');
+                    }
+                },
+
+                init() {
+                    this.fetchUserData();
+                    this.fetchJobs();
+                }
+            }));
+
+            Alpine.data('jobFormData', () => ({
+                title: '',
+                description: '',
+
+                async submitJob() {
+                    const token = localStorage.getItem('jwtToken');
+                    if (!token) {
+                        alert('No token found. Please login.');
+                        return;
+                    }
+
+                    const formData = {
+                        title: this.title,
+                        description: this.description,
+                        owner_id : this.owner_id // Use the ownerId from homepageData
+                    };
+
+                    alert(this.title + " Job uitleg " + this.description + " Gebruikernummer " + this.ownerId);
+                    
+
+                    try {
+                        const response = await fetch('/jobs/createjob', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify(formData)
+                        });
+
+                        if (response.ok) {
+                            alert('Job created successfully!');
+                            document.getElementById('jobForm').reset();
+                        } else {
+                            alert('Failed to create job.');
+                        }
+                    } catch (error) {
+                        console.error('Error creating job:', error);
+                        alert('An error occurred.');
+                    }
+                }
+            }));
+        });
+    </script>
+</body>
+</html>

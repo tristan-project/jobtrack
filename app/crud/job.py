@@ -5,8 +5,12 @@ from app.schemas.job import JobCreate
 def get_job(db: Session, job_id: int):
     return db.query(Job).filter(Job.id == job_id).first()
 
-def create_job(db: Session, job: JobCreate, user_id: int):
-    db_job = Job(**job.dict(), owner_id=user_id)
+def create_job(db: Session, title: str, description: str, owner_id: int) -> Job:
+    db_job =  Job(
+        title= title,
+        description= description,
+        owner_id= owner_id
+    )
     db.add(db_job)
     db.commit()
     db.refresh(db_job)

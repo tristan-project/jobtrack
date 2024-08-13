@@ -1,14 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
 from sqlalchemy.orm import Session
-from app.schemas.user import UserCreate, User
-from app.crud.user import create_user, get_user_by_email
+from pydantic import BaseModel
+from app.schemas.user import UserCreate, User  # Using your provided User schema
+from app.models.user import User as UserModel
+from app.crud.user import create_user, get_current_user, get_user_by_email
 from app.db.session import get_db
-from app.core.security import verify_password, create_access_token
-
-
+from app.core.security import verify_password, create_access_token, oauth2_scheme, verify_token
 
 router = APIRouter()
+
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str
 
 @router.post("/register", response_model=User)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -17,18 +21,24 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     return create_user(db=db, user=user)
 
-@router.post("/login")
+@router.post("/login", response_model=LoginResponse)
 def login_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = get_user_by_email(db, email=user.email)
+    db_user = db.query(UserModel).filter(UserModel.email == user.email).first()
     if not db_user:
         raise HTTPException(status_code=400, detail="Invalid credentials")
     if not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=400, detail="Invalid credentials")
     
-    access_token = create_access_token(data={"sub": db_user.email})
+    access_token = create_access_token(data={"sub": db_user.email, "id": db_user.id})
     return {"access_token": access_token, "token_type": "bearer"}
 
-
 @router.get("/homepage", response_class=HTMLResponse)
-async def homepage():
-    return FileResponse("frontend/app/homepage.html")
+async def homepage(token: str = Depends(oauth2_scheme)):
+    user = verify_token(token)
+    if user is None:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return FileResponse("static/app/homepage.html")
+
+@router.get("/user-data", response_model=User)
+async def user_data(current_user: User = Depends(get_current_user)):
+    return current_user
