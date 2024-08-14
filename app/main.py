@@ -42,7 +42,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 def read_root():
     return {"message": "Welcome to the Job Finder API"}
 
-@app.get("/")
+@app.get("")
 async def read_index():
     return FileResponse("static/auth/login.html")
 
