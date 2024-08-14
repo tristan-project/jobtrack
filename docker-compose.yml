@@ -1,11 +1,10 @@
 version: "3.9"
+
 services:
   python-service:
-    image: tristanberkie/eindopdracht_api
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
+    build:
+      context: .  # Set context to the root directory
+      dockerfile: /Dockerfile  # Specify the Dockerfile path
     ports:
       - "8000:8000"
     volumes:
