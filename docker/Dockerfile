@@ -4,8 +4,11 @@ FROM python:3.11-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy the contents of the app directory into the container at /app
+COPY ../app /app
+
+# Copy the requirements.txt into the container at /app
+COPY ../requirements.txt /app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
@@ -16,5 +19,5 @@ EXPOSE 80
 # Define environment variable
 ENV NAME World
 
-# Run app.py when the container launches
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+# Run main.py when the container launches
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]

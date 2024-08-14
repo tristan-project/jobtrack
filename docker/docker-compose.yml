@@ -8,7 +8,7 @@ services:
     environment:
       - DATABASE_URL=sqlite:///./test.db
     volumes:
-      - .:/app
+      - ../app:/app  # Maps the app directory to /app in the container
     depends_on:
       - db
 
