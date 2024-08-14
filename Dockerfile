@@ -2,25 +2,18 @@
 FROM python:3.11-slim
 
 # Set the working directory in the container
-WORKDIR /code
+WORKDIR /app
 
-# Expose the port that the app runs on
-EXPOSE 8000
-
-# Copy the requirements.txt file from the root directory to /code
-COPY requirements.txt /code/requirements.txt
+# Copy the current directory contents into the container at /app
+COPY requirements.txt /app/
+COPY app /app/app
+COPY static /app/static
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
-# Copy the application code from the app directory to /code/app
-COPY app /code/app
+# Make port 80 available to the world outside this container
+EXPOSE 80
 
-# Copy the static files from the root directory to /code/static
-COPY static /code/static
-
-# Create a directory for the SQLite database
-RUN mkdir -p /code/sqlitedb
-
-# Define the command to run the app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the application
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]

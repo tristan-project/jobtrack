@@ -1,14 +1,16 @@
-version: "3.9"
+version: '3.9'
 
 services:
   python-service:
     build:
-      context: .  # Set context to the root directory
-      dockerfile: /Dockerfile  # Specify the Dockerfile path
+      context: .  # Build context is the root directory
+      dockerfile: Dockerfile  # Path to Dockerfile relative to the build context
     ports:
-      - "8000:8000"
+      - "8000:80"  # Map port 80 in the container to port 8000 on the host
     volumes:
-      - sqlite_useritems_volume:/code/sqlitedb
+      - sqlite_useritems_volume:/app/sqlitedb  # Volume for SQLite database (if used)
+    environment:
+      - DATABASE_URL=sqlite:///app/sqlitedb  # Environment variable for SQLite database
 
 volumes:
   sqlite_useritems_volume:
