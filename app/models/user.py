@@ -13,3 +13,4 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
     jobs = relationship("Job", back_populates="owner")
+    profile = relationship("Profile", back_populates="user", uselist=False)

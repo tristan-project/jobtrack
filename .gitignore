@@ -1,1 +1,3 @@
-iets..
+__pycache__
+*.db
+_init_.py

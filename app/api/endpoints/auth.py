@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
+from app.crud.profile import create_profile
 from app.schemas.user import UserCreate, User  # Using your provided User schema
 from app.models.user import User as UserModel
 from app.crud.user import create_user, get_current_user, get_user_by_email
@@ -14,12 +15,39 @@ class LoginResponse(BaseModel):
     access_token: str
     token_type: str
 
-@router.post("/register", response_model=User)
-def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = get_user_by_email(db, email=user.email)
+# @router.post("/register", response_model=User)
+# def register_user(user: UserCreate, db: Session = Depends(get_db)):
+#     db_user = get_user_by_email(db, email=user.email)
+#     if db_user:
+#         raise HTTPException(status_code=400, detail="Email already registered")
+#     return create_user(db=db, user=user)
+
+class RegisterRequest(BaseModel):
+    email: str
+    password: str
+    profile: dict  # Adjust according to the profile fields
+
+@router.post("/register")
+async def register(request: RegisterRequest, db: Session = Depends(get_db)):
+    db_user = get_user_by_email(db, email= request.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return create_user(db=db, user=user)
+    
+    # user_data = {
+    #     "email": request.email,
+    #     "password": request.password
+    # }
+
+    # Create User
+    user = create_user(db = db, email = request.email, password = request.password)
+    
+    # Create Profile
+    profile_data = request.profile
+    profile_data['user_id'] = user.id  # Associate profile with user
+    create_profile(db, **profile_data)
+
+    return {"message": "User registered successfully!"}
+
 
 @router.post("/login", response_model=LoginResponse)
 def login_user(user: UserCreate, db: Session = Depends(get_db)):

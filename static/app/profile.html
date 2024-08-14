@@ -16,9 +16,52 @@
 
     <!-- Profile Data Section -->
     <div x-data="profileData()" x-init="init()">
+        <!-- Display Token and User Info -->
+        <p>Token: <strong x-text="token"></strong></p>
         <p>User ID: <strong x-text="userId"></strong></p>
         <p>Email: <strong x-text="userEmail"></strong></p>
-        <p>Token: <strong x-text="token"></strong></p>
+
+        <!-- Profile Information -->
+        <h3>Profile Information</h3>
+        <template x-if="profile.username">
+            <p>Username: <strong x-text="profile.username"></strong></p>
+        </template>
+        <template x-if="profile.name">
+            <p>Name: <strong x-text="profile.name"></strong></p>
+        </template>
+        <template x-if="profile.preferredFunctions">
+            <p>Preferred Functions: <strong x-text="profile.preferredFunctions"></strong></p>
+        </template>
+        <template x-if="profile.employmentType">
+            <p>Employment Type: <strong x-text="profile.employmentType"></strong></p>
+        </template>
+        <template x-if="profile.about">
+            <p>About: <strong x-text="profile.about"></strong></p>
+        </template>
+        <template x-if="profile.experience">
+            <p>Experience: <strong x-text="profile.experience"></strong></p>
+        </template>
+        <template x-if="profile.phoneNumber">
+            <p>Phone Number: <strong x-text="profile.phoneNumber"></strong></p>
+        </template>
+        <template x-if="profile.languages">
+            <p>Languages: <strong x-text="profile.languages"></strong></p>
+        </template>
+        <template x-if="profile.skills">
+            <p>Skills: <strong x-text="profile.skills"></strong></p>
+        </template>
+        <template x-if="profile.hobbies">
+            <p>Hobbies: <strong x-text="profile.hobbies"></strong></p>
+        </template>
+        <template x-if="profile.sports">
+            <p>Sports: <strong x-text="profile.sports"></strong></p>
+        </template>
+        <template x-if="profile.personalSkills">
+            <p>Personal Skills: <strong x-text="profile.personalSkills"></strong></p>
+        </template>
+
+        <!-- Button to Edit Profile -->
+        <button x-on:click="editProfile()">Edit Profile</button>
 
         <!-- User's Jobs Section -->
         <h3>Your Jobs</h3>
@@ -53,6 +96,21 @@
                 token: localStorage.getItem('jwtToken'),
                 userId: '',
                 userEmail: '',
+                profile: {
+                    username: '',
+                    name: '',
+                    preferredFunctions: '',
+                    employmentType: '',
+                    about: '',
+                    experience: '',
+                    phoneNumber: '',
+                    languages: '',
+                    skills: '',
+                    hobbies: '',
+                    sports: '',
+                    personalSkills: '',
+                    profilePicture: ''
+                },
                 userJobs: [],
 
                 async fetchUserData() {
@@ -82,15 +140,62 @@
                         }
                     } catch (error) {
                         console.error('Error fetching user data:', error);
+                    }
+                },
+
+                async fetchProfileData() {
+                    const token = this.token;
+                    if (!token) {
+                        alert('No token found. Please login.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/profile', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+
+                        if (response.ok) {
+                            const profileData = await response.json();
+                            this.profile = {
+                                ...this.profile,
+                                ...profileData,
+                                preferredFunctions: this.formatList(profileData.preferred_functions),
+                                languages: this.formatList(profileData.languages),
+                                skills: this.formatList(profileData.skills),
+                                hobbies: this.formatList(profileData.hobbies),
+                                sports: this.formatList(profileData.sports),
+                                personalSkills: this.formatList(profileData.personal_skills)
+                            };
+                        } else {
+                            alert('Failed to fetch profile.');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching profile:', error);
                         alert('An error occurred.');
                     }
                 },
 
+                formatList(field) {
+                    if (Array.isArray(field)) {
+                        return field.join(', ');
+                    }
+                    return '';
+                },
+
                 async fetchUserJobs() {
+                    const token = this.token;
+                    if (!token) {
+                        alert('No token found. Please login.');
+                        return;
+                    }
+
                     try {
                         const response = await fetch('/jobs', {
                             headers: {
-                                'Authorization': `Bearer ${this.token}`
+                                'Authorization': `Bearer ${token}`
                             }
                         });
 
@@ -123,7 +228,7 @@
 
                         if (response.ok) {
                             alert('Job deleted successfully!');
-                            this.fetchUserJobs(); // Refresh the job list after deletion
+                            await this.fetchUserJobs(); // Refresh the job list after deletion
                         } else {
                             alert('Failed to delete job.');
                         }
@@ -137,9 +242,14 @@
                     window.location.href = `/static/app/edit-job.html?jobId=${jobId}`;
                 },
 
-                init() {
-                    this.fetchUserData();
-                    this.fetchUserJobs();
+                editProfile() {
+                    window.location.href = '/static/app/adapt_profile.html';
+                },
+
+                async init() {
+                    await this.fetchUserData();  // Fetch user data first
+                    await this.fetchProfileData();  // Then fetch profile data
+                    await this.fetchUserJobs();  // Finally fetch user jobs
                 }
             }));
         });

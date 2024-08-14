@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adapt Profile</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div x-data="navbarData()" x-init="loadNavbar()"></div>
+
+    <h2>Adapt Profile Page</h2>
+
+    <!-- Profile Data Section -->
+    <div x-data="profileData()" x-init="init()">
+        <h3>Edit Profile Information</h3>
+
+        <!-- Editable Profile Information -->
+        <div>
+            <label>Username:</label>
+            <input type="text" x-model="profile.username">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('username')">Save</button>
+                <button x-on:click="saveAndGoToProfile('username')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Name:</label>
+            <input type="text" x-model="profile.name">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('name')">Save</button>
+                <button x-on:click="saveAndGoToProfile('name')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Preferred Functions:</label>
+            <input type="text" x-model="profile.preferred_functions">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('preferred_functions')">Save</button>
+                <button x-on:click="saveAndGoToProfile('preferred_functions')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Employment Type:</label>
+            <input type="text" x-model="profile.employment_type">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('employment_type')">Save</button>
+                <button x-on:click="saveAndGoToProfile('employment_type')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>About:</label>
+            <textarea x-model="profile.about"></textarea>
+            <div class="button-group">
+                <button x-on:click="saveProfileField('about')">Save</button>
+                <button x-on:click="saveAndGoToProfile('about')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Experience:</label>
+            <textarea x-model="profile.experience"></textarea>
+            <div class="button-group">
+                <button x-on:click="saveProfileField('experience')">Save</button>
+                <button x-on:click="saveAndGoToProfile('experience')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Phone Number:</label>
+            <input type="text" x-model="profile.phone_number">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('phone_number')">Save</button>
+                <button x-on:click="saveAndGoToProfile('phone_number')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Languages:</label>
+            <input type="text" x-model="profile.languages">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('languages')">Save</button>
+                <button x-on:click="saveAndGoToProfile('languages')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Skills:</label>
+            <input type="text" x-model="profile.skills">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('skills')">Save</button>
+                <button x-on:click="saveAndGoToProfile('skills')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Hobbies:</label>
+            <input type="text" x-model="profile.hobbies">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('hobbies')">Save</button>
+                <button x-on:click="saveAndGoToProfile('hobbies')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Sports:</label>
+            <input type="text" x-model="profile.sports">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('sports')">Save</button>
+                <button x-on:click="saveAndGoToProfile('sports')">Save & Go to Profile</button>
+            </div>
+        </div>
+
+        <div>
+            <label>Personal Skills:</label>
+            <input type="text" x-model="profile.personal_skills">
+            <div class="button-group">
+                <button x-on:click="saveProfileField('personal_skills')">Save</button>
+                <button x-on:click="saveAndGoToProfile('personal_skills')">Save & Go to Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            // Navbar loading component
+            Alpine.data('navbarData', () => ({
+                async loadNavbar() {
+                    try {
+                        const response = await fetch('/static/app/navbar.html');
+                        const navbarHtml = await response.text();
+                        this.$el.innerHTML = navbarHtml;
+                    } catch (error) {
+                        console.error('Failed to load navbar:', error);
+                    }
+                }
+            }));
+
+            // Profile page data component
+            Alpine.data('profileData', () => ({
+                token: localStorage.getItem('jwtToken'),
+                profile: {
+                    username: '',
+                    name: '',
+                    preferred_functions: '',
+                    employment_type: '',
+                    about: '',
+                    experience: '',
+                    phone_number: '',
+                    languages: '',
+                    skills: '',
+                    hobbies: '',
+                    sports: '',
+                    personal_skills: ''
+                },
+
+                async fetchProfileData() {
+                    const token = this.token;
+                    if (!token) {
+                        alert('No token found. Please login.');
+                        window.location.href = '/static/auth/login.html';
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/profile', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+
+                        if (response.ok) {
+                            const profileData = await response.json();
+                            this.profile = {
+                                ...this.profile,
+                                ...profileData,
+                                preferred_functions: profileData.preferred_functions?.join(', ') || '',
+                                languages: profileData.languages?.join(', ') || '',
+                                skills: profileData.skills?.join(', ') || '',
+                                hobbies: profileData.hobbies?.join(', ') || '',
+                                sports: profileData.sports?.join(', ') || '',
+                                personal_skills: profileData.personal_skills?.join(', ') || ''
+                            };
+                        } else {
+                            alert('Failed to fetch profile.');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching profile:', error);
+                        alert('An error occurred.');
+                    }
+                },
+
+                async saveProfileField(fieldName) {
+                    const token = this.token;
+                    if (!token) {
+                        alert('No token found. Please login.');
+                        return;
+                    }
+
+                    const data = {};
+                    data[fieldName] = this.profile[fieldName];
+
+                    // Convert comma-separated strings to arrays for list fields
+                    if (['preferred_functions', 'languages', 'skills', 'hobbies', 'sports', 'personal_skills'].includes(fieldName)) {
+                        data[fieldName] = this.profile[fieldName].split(',').map(item => item.trim());
+                    }
+
+                    try {
+                        const response = await fetch('/profile', {
+                            method: 'PATCH',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        });
+
+                        if (response.ok) {
+                            alert(`${fieldName} updated successfully!`);
+                        } else {
+                            alert(`Failed to update ${fieldName}.`);
+                        }
+                    } catch (error) {
+                        console.error(`Error updating ${fieldName}:`, error);
+                        alert('An error occurred.');
+                    }
+                },
+
+                async saveAndGoToProfile(fieldName) {
+                    await this.saveProfileField(fieldName);
+                    window.location.href = '/static/app/profile.html'; // Redirect to profile page
+                },
+
+                async init() {
+                    await this.fetchProfileData();
+                }
+            }));
+        });
+    </script>
+</body>
+
+</html>

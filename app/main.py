@@ -1,7 +1,7 @@
 # Tristan Berkmans 
 # r0784105
 from fastapi import Depends, FastAPI
-from app.api.endpoints import auth, jobs, users
+from app.api.endpoints import auth, jobs, users, profile
 from app.core.config import settings
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -33,6 +33,7 @@ def on_startup():
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(jobs.router, prefix="/jobs", tags=["jobs"])
 app.include_router(users.router, prefix="/users", tags=["users"])
+app.include_router(profile.router, prefix="/profile", tags=["profile"])
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 

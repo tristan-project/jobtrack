@@ -5,6 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+    <h2>Register</h2>
+    <form id="registerForm" x-data="registerData()" x-on:submit.prevent="registerUser">
+        <!-- User fields -->
+        <label for="email">Email:</label>
+        <input type="email" id="email" x-model="email" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" x-model="password" required>
+        <br>
+        
+        <!-- Profile fields -->
+        <label for="username">Username:</label>
+        <input type="text" id="username" x-model="profile.username" required>
+        <br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" x-model="profile.name">
+        <br>
+        <!-- Add more profile fields as necessary -->
+
+        <button type="submit">Register</button>
+    </form>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('registerData', () => ({
+                email: '',
+                password: '',
+                profile: {
+                    username: '',
+                    name: ''
+                    // Add more profile fields here
+                },
+
+                async registerUser() {
+                    const formData = {
+                        email: this.email,
+                        password: this.password,
+                        profile: this.profile
+                    };
+
+                    try {
+                        const response = await fetch('/auth/register', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(formData)
+                        });
+
+                        if (response.ok) {
+                            alert('Registration successful!');
+                            window.location.href = '/static/auth/login.html'; // Redirect to login or another page
+                        } else {
+                            alert('Failed to register.');
+                        }
+                    } catch (error) {
+                        console.error('Error registering user:', error);
+                        alert('An error occurred.');
+                    }
+                }
+            }));
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
     <script>
         async function register(event) {
             event.preventDefault();
@@ -45,4 +126,4 @@
     </form>
     <p>Already have an account? <a href="/auth/login.html">Login here</a></p>
 </body>
-</html>
+</html> -->
