@@ -1,25 +1,15 @@
-version: '3.8'
-
+version: "3.9"
 services:
-  web:
-    build: .
+  python-service:
+    image: tristanberkie/eindopdracht_api
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
     ports:
-      - "8000:80"
-    environment:
-      - DATABASE_URL=sqlite:///./test.db
+      - "8000:8000"
     volumes:
-      - ../:/app  # Maps the app directory to /app in the container
-    depends_on:
-      - db
-
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - sqlite_useritems_volume:/code/sqlitedb
 
 volumes:
-  postgres_data:
+  sqlite_useritems_volume:
