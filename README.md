@@ -12,30 +12,39 @@ Below is a summary of the project status, detailing what has been accomplished a
 ## 1. General Requirements & Documentation
 
 ### API Endpoints
-
 - **GET Endpoints**:
-  - `/jobs`: Retrieves a list of all jobs.
-  - `/jobs/{id}`: Retrieves details of a specific job by ID.
-  - `/users`: Retrieves a list of all users.
-
-  ![GET Jobs](readme/get_jobs.png)
-  ![GET Users](readme/get_users.png)
+  - **`/jobs`**: Retrieves a list of all job listings.
+    ![GET Jobs](readme/get_jobs.png)
+  - **`/jobs/{id}`**: Retrieves details of a specific job listing by ID.
+    ![GET Job](readme/get_job.png)
+  - **`/users`**: Retrieves a list of all users.
+    ![GET Users](readme/get_users.png)
+  - **`/users/{id}`**: Retrieves details of a specific user by ID.
+    ![GET User](readme/get_user.png)
+  - **`/profile`**: Retrieves the profile information of the currently authenticated user.
+    ![GET Profile](readme/get_profile.png)
 
 - **POST Endpoints**:
-  - `/jobs`: Creates a new job listing.
-
-  ![POST Job](readme/post_job.png)
+  - **`/jobs`**: Creates a new job listing.
+    ![POST Job](readme/post_job.png)
+  - **`/users`**: Creates a new user.
+    ![POST User](readme/post_user.png)
+  - **`/auth/login`**: Authenticates a user and returns a token.
+    ![POST Auth](readme/post_auth.png)
 
 - **PUT Endpoints**:
-  - `/jobs/{id}`: Updates details of an existing job listing.
-
-  ![PUT Job](readme/put_job.png)
+  - **`/jobs/{id}`**: Updates details of an existing job listing.
+    ![PUT Job](readme/put_job.png)
+  - **`/users/{id}`**: Updates details of an existing user.
+    ![PUT User](readme/put_user.png)
+  - **`/profile`**: Updates the profile information of the currently authenticated user.
+    ![PUT Profile](readme/put_profile.png)
 
 - **DELETE Endpoints**:
-  - `/jobs/{id}`: Deletes a job listing by ID.
+  - **`/jobs/{id}`**: Deletes a job listing by ID.
+    ![DELETE Job](readme/delete_job.png)
 
-  ![DELETE Job](readme/delete_job.png)
-
+    
 ### Entities and Database
 
 - **SQLite Database**:
