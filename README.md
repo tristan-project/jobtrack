@@ -70,10 +70,6 @@ Below is a summary of the project status, detailing what has been accomplished a
   - [GitHub Repository](https://github.com/tristan-project/jobtrack)
 
 ### Docker and Deployment
-#### Prerequisites
-
-- **Docker**: Ensure Docker is installed on your machine. Follow [Docker's official installation guide](https://docs.docker.com/get-docker/).
-- **Docker Compose**: Ensure Docker Compose is installed. Follow [Docker's installation instructions](https://docs.docker.com/compose/install/).
 
 - **Docker Container**:
   - Dockerfile created for the API.
@@ -83,53 +79,7 @@ Below is a summary of the project status, detailing what has been accomplished a
 
 - **Docker Compose Deployment**:
 
-#### Deployment Steps
-
-##### 1. Clone the Repository
-
-First, clone the repository from GitHub to your local machine:
-
-```sh
-git clone https://github.com/your-repo/jobtrack.git
-cd jobtrack
-```
-
-
-##### 2. Build and Start Containers
-
-Navigate to the directory containing the docker-compose.yml file and build the Docker images. Then, start the containers:
-
-```sh
-docker-compose up -d
-```
-##### 3.  Verify Deployment
-
-Check the status of your running containers to ensure they are up and running:
-
-```sh
-docker-compose ps
-```
-
-To view logs and check for any errors, use:
-
-```sh
-docker-compose ps
-``` 
-This will help you troubleshoot any issues with the containers.
-
-
-##### 4. Access the API
-
-Open your web browser and navigate to http://localhost:8000 to access the API. Verify that your application is functioning as expected by interacting with the API endpoints.
-
-##### 5. Stopping the Containers
-
-When you are finished, you can stop and remove the containers with:
-
-```sh
-docker-compose down
   - API container deployed using Docker Compose.
-```
 
 ## 2. Additions: Functionality
 

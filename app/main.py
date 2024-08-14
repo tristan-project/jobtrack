@@ -44,7 +44,7 @@ def read_root():
 
 @app.get("/")
 async def read_index():
-    return FileResponse("static/index.html")
+    return FileResponse("static/auth/login.html")
 
 
 @app.get("/users/create_users.html")
