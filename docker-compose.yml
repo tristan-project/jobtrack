@@ -1,3 +1,20 @@
+# version: '3.9'
+
+# services:
+#   python-service:
+#     build:
+#       context: .  # Build context is the root directory
+#       dockerfile: Dockerfile  # Path to Dockerfile relative to the build context
+#     ports:
+#       - "8000:80"  # Map port 80 in the container to port 8000 on the host
+#     volumes:
+#       - sqlite_useritems_volume:/app/sqlitedb  # Volume for SQLite database (if used)
+#     environment:
+#       - DATABASE_URL=sqlite:///app/sqlitedb  # Environment variable for SQLite database
+
+# volumes:
+#   sqlite_useritems_volume:
+
 version: '3.9'
 
 services:
@@ -11,6 +28,37 @@ services:
       - sqlite_useritems_volume:/app/sqlitedb  # Volume for SQLite database (if used)
     environment:
       - DATABASE_URL=sqlite:///app/sqlitedb  # Environment variable for SQLite database
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"  # Grafana UI accessible at http://localhost:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin  # Default admin username
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Default admin password
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"  # Prometheus UI accessible at http://localhost:9090
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Prometheus config file
+    networks:
+      - monitoring
 
 volumes:
   sqlite_useritems_volume:
+  grafana_data:
+  prometheus_data:
+
+networks:
+  monitoring:
