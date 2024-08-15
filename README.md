@@ -110,7 +110,7 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
 - **Niet geïmplemteerd**:
 
 ### Messaging
-- **ActiveMQ Niet geïmplemteerd**:
+- **ActiveMQ niet geïmplemteerd**:
 
 ## 5. Additions: Monitoring
 
