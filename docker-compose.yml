@@ -7,10 +7,22 @@ services:
       dockerfile: Dockerfile  # Path to Dockerfile relative to the build context
     ports:
       - "8000:80"  # Map port 80 in the container to port 8000 on the host
+      - "8001:8001"  # Expose the metrics server on port 8001
     volumes:
       - sqlite_useritems_volume:/app/sqlitedb  # Volume for SQLite database (if used)
     environment:
       - DATABASE_URL=sqlite:///app/sqlitedb  # Environment variable for SQLite database
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"  # Prometheus UI accessible at http://localhost:9090
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Prometheus config file
     networks:
       - monitoring
 
@@ -26,17 +38,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin  # Default admin password
     networks:
       - monitoring
-
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    ports:
-      - "9090:9090"  # Prometheus UI accessible at http://localhost:9090
-    volumes:
-      - prometheus_data:/prometheus
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Prometheus config file
-    networks:
-      - monitoring
+    depends_on:
+      - prometheus
 
 volumes:
   sqlite_useritems_volume:
