@@ -3,9 +3,10 @@
 ## Voorwoord
 
 In dit project heb ik een vacaturedatabase ontwikkeld met als doel mensen te verbinden met banen, die het beste aansluiten bij hun levensstijl en ambities. De opzet van deze applicatie is een platform aan te bieden waar enerzijds individuen hun profiel kunnen plaatsen en anderzijds organisaties hun vacatures kunnen plaatsen en beheren. Het doel van het project is de toekomst van werk te verbeteren door gebruikers een breed scala aan mogelijkheden te bieden. 
+
 Dit herexamenproject is volledig nieuw opgebouwd, met als doel een innovatieve en gebruiksvriendelijke oplossing te bieden voor het vinden van de juiste baan.
 
-# Inleiding
+## Inleiding
 
 Voor dit project heb ik een webapplicatie ontwikkeld voor het beheren van vacatures, waarbij ik gebruik heb gemaakt van verschillende moderne technologieën. De applicatie is opgebouwd met Python en FastAPI voor de backend, en SQLite als database voor het opslaan van vacatures. De frontend is gerealiseerd met HTML en Alpine.js voor een interactieve gebruikersinterface.
 
