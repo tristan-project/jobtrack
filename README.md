@@ -23,18 +23,19 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
 
 - **SQLite Database**:
   - API gebruikt SQLite met entiteiten zoals jobs, users en profiles.
-
   ![Database Overview](readme/database_overview.png)
 
 ### Authentication en Security
 
 - **Hashing en OAuth**:
+
   - Geïmplementeerd in `/app/api/endpoint/auth.py`.
   - Verwezelijkt  in `/app/core/`.
 
 ### Path parameters, query parameters en body parameters
 
 - **Aanwezig**
+
   - Path Parameters in `/app/api/endpoint/`.
   - Query Parameters  in `/app/api/endpoint/`.
   - Body parameters  in `/app/crud/` en `/app/schemas/`.
@@ -53,42 +54,53 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
 
     ![Docker compose](readme/docker_compose.png)
 
-## 2. Additions: Functionality
+## 2. Additions: Functionaliteit
 
-### Testing
+### Testen
 
 - **Test Endpoints**:
   - Tests voor GET, POST, PUT en DELETE endpoints werden uitgevoerd.
   - Test bestanden in `/app/tests/`.
     ![test pass](readme/pytest.png)
 
-- **Communiceer met een externe API vanuit je eigen API**:
+- **Communiceer met een externe API vanuit eigen API**:
   - Jammer genoeg geen externe api (ik wou vdab api implementeren maar kreeg geen toegang).
 
 ## 3. Additions: Front-End
 
 - **Front-End Development**:
-    - Front-end gebruikt alle endpoints 
+    Front-end gebruikt alle endpoints 
     - Aanmaken account 
+
     ![Register](readme/fronternd/register.png)
+    
     - Inloggen account
+    
     ![Login](readme/fronternd/login.png)
-    - homepage met data
+    
+    - Homepage met data
+    
     ![homepage](readme/fronternd/homepage.png)
-    - profile standaard
+    
+    - Standaard profiel
+    
     ![profiel](readme/fronternd/profile.png)
-    - profile na aanpassen en job create (Job create gebeurt op homepage)
+    
+    - Profiel na aanpassen en job create (Job create gebeurt op homepage)
+    
     ![ingevuld profiel ](readme/fronternd/ingevuld_profile.png)
-    - job aanpassen 
+    
+    - Job aanpassen 
+    
     ![job veranderen](readme/fronternd/job_veranderen.png)
 
 - **Styling**:
-  - basic styling `/static/ccs/`
+  - Basis styling `/static/ccs/`
 
 - **JavaScript Framework**:
   - Ik gebruik Alpine.js
 
-- **Maak gebruik van een Grafana container om een Grafana oplossing op te zetten om mijn API te gebruiken**:
+- **Gebruik van een Grafana container om een Grafana oplossing op te zetten om mijn API te gebruiken**:
     ![grafana](readme/grafana.png)
 
 
@@ -105,7 +117,7 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
 ### Prometheus and Grafana
 
 - **Voeg een Prometheus container en een Grafana container toe in je Docker Compose deployment en zorg ervoor dat Prometheus een /metrics endpoint heeft binnen je API om metrics uit te halen. Zorg er dan voor dat Grafana een dashboard heeft dat deze metric data weergeeft uit Prometheus.**:
-  - metrics in `/app/utils/metrics.py`.
+  - Metrics in `/app/utils/metrics.py`.
     ![metrics](readme/metrics.png)
   - Telt userlogin, usercreate en job.
       ![grafana](readme/grafana.png)
