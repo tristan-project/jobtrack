@@ -1,79 +1,48 @@
-# jobtrack
-In this reposetory we create an application build to connect people with the job best suited for there life. Working in diffrent offices withg diffrent people building a with span experience and score by diffrent organisation. Creating the future of working.
-Opgave Herexamenproject
-Voor het herexamenproject werk je wederom individueel een opdracht uit. Het thema mag je zelf kiezen. Je mag niet verder bouwen aan een project dat je in semester 1 gemaakt hebt, je begint dus met een volledig nieuw project!
+# JOBTRACK
 
-# JobTrack API
+## Voorwoord
 
-For the final project in API development, the goal was to create a web application for job tracking and management. This application allows users to handle job listings efficiently, including operations such as creating, updating, and deleting job posts. 
+In dit project heb ik een vacaturedatabase ontwikkeld met als doel mensen te verbinden met banen, die het beste aansluiten bij hun levensstijl en ambities. De opzet van deze applicatie is een platform aan te bieden waar enerzijds individuen hun profiel kunnen plaatsen en anderzijds organisaties hun vacatures kunnen plaatsen en beheren. Het doel van het project is de toekomst van werk te verbeteren door gebruikers een breed scala aan mogelijkheden te bieden. 
+Dit herexamenproject is volledig nieuw opgebouwd, met als doel een innovatieve en gebruiksvriendelijke oplossing te bieden voor het vinden van de juiste baan.
 
-Below is a summary of the project status, detailing what has been accomplished and what remains to be completed.
+# Inleiding
 
-## 1. General Requirements & Documentation
+Voor dit project heb ik een webapplicatie ontwikkeld voor het beheren van vacatures, waarbij ik gebruik heb gemaakt van verschillende moderne technologieën. De applicatie is opgebouwd met Python en FastAPI voor de backend, en SQLite als database voor het opslaan van vacatures. De frontend is gerealiseerd met HTML en Alpine.js voor een interactieve gebruikersinterface.
+
+Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Compose ingezet voor containerisatie en orkestratie. Voor monitoring en visualisatie van de prestaties heb ik Prometheus en Grafana geïntegreerd, waardoor ik real-time inzichten en statistieken kan verzamelen. Ook heb ik GitHub Actions geconfigureerd voor automatische testen en implementatie, waardoor de ontwikkelingsworkflow verder is geoptimaliseerd.
+
+## 1. Algemene eisen & documentatie
 
 ### API Endpoints
-- **GET Endpoints**:
-  - **`/jobs`**: Retrieves a list of all job listings.
-    ![GET Jobs](readme/get_jobs.png)
-  - **`/jobs/{id}`**: Retrieves details of a specific job listing by ID.
-    ![GET Job](readme/get_job.png)
-  - **`/users`**: Retrieves a list of all users.
-    ![GET Users](readme/get_users.png)
-  - **`/users/{id}`**: Retrieves details of a specific user by ID.
-    ![GET User](readme/get_user.png)
-  - **`/profile`**: Retrieves the profile information of the currently authenticated user.
-    ![GET Profile](readme/get_profile.png)
 
-- **POST Endpoints**:
-  - **`/jobs`**: Creates a new job listing.
-    ![POST Job](readme/post_job.png)
-  - **`/users`**: Creates a new user.
-    ![POST User](readme/post_user.png)
-  - **`/auth/login`**: Authenticates a user and returns a token.
-    ![POST Auth](readme/post_auth.png)
-
-- **PUT Endpoints**:
-  - **`/jobs/{id}`**: Updates details of an existing job listing.
-    ![PUT Job](readme/put_job.png)
-  - **`/users/{id}`**: Updates details of an existing user.
-    ![PUT User](readme/put_user.png)
-  - **`/profile`**: Updates the profile information of the currently authenticated user.
-    ![PUT Profile](readme/put_profile.png)
-
-- **DELETE Endpoints**:
-  - **`/jobs/{id}`**: Deletes a job listing by ID.
-    ![DELETE Job](readme/delete_job.png)
+![Jobs](readme/endpoints.png)
 
 
-### Entities and Database
+### Entities en Database
 
 - **SQLite Database**:
-  - The API uses SQLite with entities such as jobs, users, and profile.
+  - API gebruikt SQLite met entiteiten zoals jobs, users en profiles.
 
   ![Database Overview](readme/database_overview.png)
 
-### Authentication and Security
+### Authentication en Security
 
-- **Hashing and OAuth**:
-  - Implemented in `auth.py`.
+- **Hashing en OAuth**:
+  - Geïmplementeerd in `/app/api/endpoint/auth.py`.
+  - Verwezelijkt  in `/app/core/`.
 
-### Documentation and Hosting
+### Path parameters, query parameters en body parameters
 
-- **Theme and API Description**:
-  - The application enables users to manage job listings with full CRUD operations.
-  - Hosted application can be accessed at [Live Deployment](https://python-service-tristan-project.cloud.okteto.net/static/index.html).
+- **Aanwezig**
+  - Path Parameters in `/app/api/endpoint/`.
+  - Query Parameters  in `/app/api/endpoint/`.
+  - Body parameters  in `/app/crud/` en `/app/schemas/`.
 
-- **OpenAPI Documentation**:
-  - Full documentation available [here](https://python-service-tristan-project.cloud.okteto.net/openapi.json).
-
-- **GitHub Repository**:
-  - [GitHub Repository](https://github.com/tristan-project/jobtrack)
-
-### Docker and Deployment
+### Docker en Deployment
 
 - **Docker Container**:
-  - Dockerfile created for the API.
-  - Automated build via GitHub Actions.
+  - Dockerfile gemaakt voor de API in `/Dockerfile`.
+  - Automatisch gebouwd met GitHub Actions.
 
   ![GitHub Actions](readme/github_actions.png)
 
@@ -81,51 +50,63 @@ Below is a summary of the project status, detailing what has been accomplished a
 
   - API container deployed using Docker Compose.
 
+    ![Docker compose](readme/docker_compose.png)
+
 ## 2. Additions: Functionality
 
 ### Testing
 
-- **GET Endpoints**:
-  - Tests using `requests` and `pytest` are pending implementation.
+- **Test Endpoints**:
+  - Tests voor GET, POST, PUT en DELETE endpoints werden uitgevoerd.
+  - Test bestanden in `/app/tests/`.
+    ![test pass](readme/pytest.png)
 
-- **Non-GET Endpoints**:
-  - Tests for POST, PUT, and DELETE endpoints have been completed.
-
-- **GitHub Actions Testing**:
-  - Test file runs during GitHub Actions.
+- **Communiceer met een externe API vanuit je eigen API**:
+  - Jammer genoeg geen externe api (ik wou vdab api implementeren maar kreeg geen toegang).
 
 ## 3. Additions: Front-End
 
 - **Front-End Development**:
-  - Front-end interface supporting all GET and POST endpoints is complete.
-
-- **Hosting**:
-  - Front-end is not yet hosted on Netlify.
+    - Front-end gebruikt alle endpoints 
+    - Aanmaken account 
+    ![Register](readme/fronternd/register.png)
+    - Inloggen account
+    ![Login](readme/fronternd/login.png)
+    - homepage met data
+    ![homepage](readme/fronternd/homepage.png)
+    - profile standaard
+    ![profiel](readme/fronternd/profile.png)
+    - profile na aanpassen en job create (Job create gebeurt op homepage)
+    ![ingevuld profiel ](readme/fronternd/ingevuld_profile.png)
+    - job aanpassen 
+    ![job veranderen](readme/fronternd/job_veranderen.png)
 
 - **Styling**:
-  - Styling has been completed.
+  - basic styling `/static/ccs/`
 
 - **JavaScript Framework**:
-  - Currently using Alpine.js; considering integration of Vue, React, Angular, or Svelte.
+  - Ik gebruik Alpine.js
+
+- **Maak gebruik van een Grafana container om een Grafana oplossing op te zetten om mijn API te gebruiken**:
+    ![grafana](readme/grafana.png)
+
 
 ## 4. Additions: Data
 
 ### MongoDB
-
-- **MongoDB Atlas**:
-  - A new version of the API using MongoDB Atlas is planned but not yet implemented.
-
-- **MongoDB Container**:
-  - Future plans include replacing MongoDB Atlas with a MongoDB container in the deployment.
+- **Niet geïmplemteerd**:
 
 ### Messaging
-
-- **ActiveMQ**:
-  - Integration of ActiveMQ for message queuing is planned but not yet completed.
+- **ActiveMQ Niet geïmplemteerd**:
 
 ## 5. Additions: Monitoring
 
 ### Prometheus and Grafana
 
-- **Prometheus and Grafana Setup**:
-  - Plans to add Prometheus for metrics collection and Grafana for visualization are in progress but not yet completed.
+- **Voeg een Prometheus container en een Grafana container toe in je Docker Compose deployment en zorg ervoor dat Prometheus een /metrics endpoint heeft binnen je API om metrics uit te halen. Zorg er dan voor dat Grafana een dashboard heeft dat deze metric data weergeeft uit Prometheus.**:
+  - metrics in `/app/utils/metrics.py`.
+    ![metrics](readme/metrics.png)
+  - Telt userlogin, usercreate en job.
+      ![grafana](readme/grafana.png)
+
+
