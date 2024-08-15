@@ -1,20 +1,33 @@
 # Tristan Berkmans 
 # r0784105
-from fastapi import Depends, FastAPI
+import time
+from fastapi import Depends, FastAPI, Request
 from app.api.endpoints import auth, jobs, users, profile
 from app.core.config import settings
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from app.db.create_db import init_db
 from app.core.security import verify_token
-
 from fastapi.middleware.cors import CORSMiddleware
+from app.utils.metrics import REQUEST_TIME, start_metrics_server
 
 
-
+# Create a metric to track time spent and requests made. 
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
+# Start the Prometheus metrics server
+start_metrics_server()
+
+
+# Middleware to measure request processing time
+@app.middleware("http")
+async def add_process_time_header(request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+    return response
 
 
 app.add_middleware(
@@ -36,6 +49,16 @@ app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(profile.router, prefix="/profile", tags=["profile"])
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@REQUEST_TIME.time()  # Decorate your endpoint to measure its request time
+@app.get("/")
+def read_root():
+    time.sleep(0.5)  # Simulate a delay
+    return {"Hello": "World"}
+
+@app.get("/metrics")
+def get_metrics():
+    return "Metrics are exposed on a separate server."
 
 
 @app.get("/test")
