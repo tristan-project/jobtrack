@@ -16,6 +16,8 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
 
 ### API Endpoints
 
+- **ik plak de screenshots van de postman request op het einde**:
+
 ![Jobs](readme/endpoints.png)
 
 
@@ -122,4 +124,62 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
   - Telt userlogin, usercreate en job.
       ![grafana](readme/grafana.png)
 
+
+
+
+
+
+      - **Front-End Development**:
+Screenshots van alle endpoints in postman, Ik persoonlijk verkies om tijdens het creeren van applicatie om  THUNDER CLIENT te gebruiken (in visual studio code)
+
+
+    - Aanmaken account `/auth/register`
+
+    ![Register](readme/postman/register.png)
+    
+    - Inloggen account `/auth/login`
+    
+    ![Login](readme/postman/login.png)
+    
+    - Homepage `/auth/homepage`
+    
+    ![homepage](readme/postman/homepage.png)
+    
+    - profiel veranderen `/profile/`
+    
+    ![profiel](readme/postman/profilepatch.png)
+    
+    - Profiel ophalen `/profile/`
+    
+    ![ingevuld profiel ](readme/postman/profileget.png)
+
+    - Profiel maken `/profile/`
+    
+Een profiel aanmaken gebeurt automatisch samen met `/auth/register`. het is niet mogelijk om er apart te creeren.
+    
+    - Job aanpassen of verwijderen `/job/{id}`
+    
+Aangezien jobs een functie heeft om te testen of de gebruiker die ingelogt is deze mag verwijderen of toevoegen is het heel moeilijk om hier een voorbeeld van te laten zien met postman. In de frontend word snel duidelijk waarom deze keuzes zijn gemaakt.
+
+    - Job ophalen met id `/job/{id}`
+    
+    ![job met id](readme/postman/getjobwithid.png)
+
+    - alle Jobs ophalen `/job`
+    
+    ![alle jobs](readme/postman/getjobs.png)
+
+    - Job aanmaken `/job/create-job`
+    
+    ![alle aanmaken](readme/postman/Createjobs.png)
+
+    - ophalen van user-data `/auth/user-data`, `/users/me` en `/users/user-data`
+
+Ik heb perongelijk 3 keer dezelfde functie gemaakt 
+    
+    ![userdata](readme/postman/user_userdata.png)
+    
+    ![userdata](readme/postman/userdata.png)
+
+    ![userdata](readme/postman/users_me.png)
 
