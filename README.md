@@ -16,7 +16,7 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
 
 ### API Endpoints
 
-- **ik plak de screenshots van de postman request op het einde**:
+- **De screenshots van de postman request staan aan het einde van dit documentuserdata**:
 
 ![Jobs](readme/endpoints.png)
 
@@ -52,23 +52,23 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
 
 - **Docker Compose Deployment**:
 
-  - API container deployed using Docker Compose.
+  - API container deployed door gebruik te maken van Docker Compose.
 
     ![Docker compose](readme/docker_compose.png)
 
-## 2. Additions: Functionaliteit
+## 2. Extra: Functionaliteiten
 
 ### Testen
 
 - **Test Endpoints**:
   - Tests voor GET, POST, PUT en DELETE endpoints werden uitgevoerd.
-  - Test bestanden in `/app/tests/`.
+  - Testbestanden in `/app/tests/`.
     ![test pass](readme/pytest.png)
 
 - **Communiceer met een externe API vanuit eigen API**:
-  - Jammer genoeg geen externe api (ik wou vdab api implementeren maar kreeg geen toegang).
+  - Jammer genoeg is er geen externe API(ik wou VDAB API implementeren maar kreeg geen toegang).
 
-## 3. Additions: Front-End
+## 3. Extra: Front-End
 
 - **Front-End Development**:
     Front-end gebruikt alle endpoints 
@@ -88,7 +88,7 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
     
     ![profiel](readme/fronternd/profile.png)
     
-    - Profiel na aanpassen en job create (Job create gebeurt op homepage)
+    - Profiel na aanpassen en job creatie (Job creatie gebeurt op de homepage)
     
     ![ingevuld profiel ](readme/fronternd/ingevuld_profile.png)
     
@@ -130,7 +130,7 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
 
 
       - **Front-End Development**:
-Screenshots van alle endpoints in postman, Ik persoonlijk verkies om tijdens het creeren van applicatie om  THUNDER CLIENT te gebruiken (in visual studio code)
+Screenshots van alle endpoints in postman. (Zelf zou ik kiezen voor THUNDER CLIENT (Visual Studio code) voor het creëren van deze applicatie)
 
 
     - Aanmaken account `/auth/register`
@@ -145,7 +145,7 @@ Screenshots van alle endpoints in postman, Ik persoonlijk verkies om tijdens het
     
     ![homepage](readme/postman/homepage.png)
     
-    - profiel veranderen `/profile/`
+    - Profiel veranderen `/profile/`
     
     ![profiel](readme/postman/profilepatch.png)
     
@@ -155,17 +155,17 @@ Screenshots van alle endpoints in postman, Ik persoonlijk verkies om tijdens het
 
     - Profiel maken `/profile/`
     
-Een profiel aanmaken gebeurt automatisch samen met `/auth/register`. het is niet mogelijk om er apart te creeren.
+Een profiel aanmaken gebeurt automatisch samen met `/auth/register`. Het is niet mogelijk om er apart te creëren.
     
     - Job aanpassen of verwijderen `/job/{id}`
     
 Aangezien jobs een functie heeft om te testen of de gebruiker die ingelogt is deze mag verwijderen of toevoegen is het heel moeilijk om hier een voorbeeld van te laten zien met postman. In de frontend word snel duidelijk waarom deze keuzes zijn gemaakt.
 
-    - Job ophalen met id `/job/{id}`
+    - Job ophalen met ID `/job/{id}`
     
     ![job met id](readme/postman/getjobwithid.png)
 
-    - alle Jobs ophalen `/job`
+    - Alle Jobs ophalen `/job`
     
     ![alle jobs](readme/postman/getjobs.png)
 
@@ -173,9 +173,9 @@ Aangezien jobs een functie heeft om te testen of de gebruiker die ingelogt is de
     
     ![alle aanmaken](readme/postman/Createjobs.png)
 
-    - ophalen van user-data `/auth/user-data`, `/users/me` en `/users/user-data`
+    - Ophalen van user-data `/auth/user-data`, `/users/me` en `/users/user-data`
 
-Ik heb perongelijk 3 keer dezelfde functie gemaakt 
+Ik heb per ongeluk drie keer dezelfde functie gemaakt.
     
     ![userdata](readme/postman/user_userdata.png)
     
