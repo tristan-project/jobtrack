@@ -124,13 +124,17 @@ Om de applicatie efficiënt te beheren en te schalen, heb ik Docker en Docker Co
   - Telt userlogin, usercreate en job.
       ![grafana](readme/grafana.png)
 
+## Besluit 
+
+Ik Ben trots op het resultaat dat ik heb kunnen realiseren. Ik heb bijna alle creteria kunnen verwerken in het project. Indien ik meer tijd zou nemen zou ik dit nog kunnen ombouwen naar een echte realtime app die gebruikt zou kunnen worden wereldwijd om mensen aan een job te helpen.
+
+Het meest trots ben ik op mijn file structuur. Door op deze gestructeerde manier te werken is het veel gemakkelijker om errors te vinden en op te lossen.
 
 
+## Postman screenshots
 
-
-
-      - **Front-End Development**:
-Screenshots van alle endpoints in postman. (Zelf zou ik kiezen voor THUNDER CLIENT (Visual Studio code) voor het creëren van deze applicatie)
+- **Endpoint**:
+    Screenshots van alle endpoints in postman. (Zelf zou ik kiezen voor THUNDER CLIENT (Visual Studio code) voor het creëren van deze applicatie)
 
 
     - Aanmaken account `/auth/register`
