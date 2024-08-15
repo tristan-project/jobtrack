@@ -58,7 +58,7 @@ def read_root():
     time.sleep(0.5)  # Simulate a delay
     return {"Hello": "World"}
 
-@login_request_counter.collect
+
 @app.get("/metrics")
 def metrics():
     return Response(content=generate_latest(), media_type=choose_encoder("text/plain"))
