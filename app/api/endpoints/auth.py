@@ -8,7 +8,7 @@ from app.models.user import User as UserModel
 from app.crud.user import create_user, get_current_user, get_user_by_email
 from app.db.session import get_db
 from app.core.security import verify_password, create_access_token, oauth2_scheme, verify_token
-from app.utils.metrics import login_request_counter
+from app.utils.metrics import login_request_counter, register_request_counter
 
 
 router = APIRouter()
@@ -47,7 +47,7 @@ async def register(request: RegisterRequest, db: Session = Depends(get_db)):
     profile_data = request.profile
     profile_data['user_id'] = user.id  # Associate profile with user
     create_profile(db, **profile_data)
-
+    register_request_counter.inc()  # Increment the counter
     return {"message": "User registered successfully!"}
 
 

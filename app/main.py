@@ -10,7 +10,7 @@ from fastapi.responses import FileResponse
 from app.db.create_db import init_db
 from app.core.security import verify_token
 from fastapi.middleware.cors import CORSMiddleware
-from app.utils.metrics import REQUEST_TIME, start_metrics_server, login_request_counter
+from app.utils.metrics import REQUEST_TIME, start_metrics_server
 from prometheus_client.exposition import choose_encoder
 
 

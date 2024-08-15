@@ -9,7 +9,7 @@ from app.db.session import get_db
 from typing import List
 from app.crud.user import get_current_user
 from sqlalchemy import Integer
-
+from app.utils.metrics import job_request_counter
 
 router = APIRouter()
 
@@ -27,6 +27,8 @@ def create_job_route(job: JobCreate, db: Session = Depends(get_db)):
     # Ensure `create_job` function in CRUD accepts these parameters
     try:
         new_job = create_job(db=db, title=job.title, description=job.description, owner_id=int(job.owner_id))
+        job_request_counter.inc()  # Increment the counter
+
         return new_job
     except Exception as e:
         logging.error(f"Error creating job: {e}")
