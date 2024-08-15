@@ -155,11 +155,11 @@ Screenshots van alle endpoints in postman. (Zelf zou ik kiezen voor THUNDER CLIE
 
     - Profiel maken `/profile/`
     
-Een profiel aanmaken gebeurt automatisch samen met `/auth/register`. Het is niet mogelijk om er apart te creëren.
+    Een profiel aanmaken gebeurt automatisch samen met `/auth/register`. Het is niet mogelijk om er apart te creëren.
     
     - Job aanpassen of verwijderen `/job/{id}`
     
-Aangezien jobs een functie heeft om te testen of de gebruiker die ingelogt is deze mag verwijderen of toevoegen is het heel moeilijk om hier een voorbeeld van te laten zien met postman. In de frontend word snel duidelijk waarom deze keuzes zijn gemaakt.
+    Aangezien jobs een functie heeft om te testen of de gebruiker die ingelogt is deze mag verwijderen of toevoegen is het heel moeilijk om hier een voorbeeld van te laten zien met postman. In de frontend word snel duidelijk waarom deze keuzes zijn gemaakt.
 
     - Job ophalen met ID `/job/{id}`
     
@@ -175,7 +175,7 @@ Aangezien jobs een functie heeft om te testen of de gebruiker die ingelogt is de
 
     - Ophalen van user-data `/auth/user-data`, `/users/me` en `/users/user-data`
 
-Ik heb per ongeluk drie keer dezelfde functie gemaakt.
+    Ik heb per ongeluk drie keer dezelfde functie gemaakt.
     
     ![userdata](readme/postman/user_userdata.png)
     
