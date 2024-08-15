@@ -1,7 +1,8 @@
 # Tristan Berkmans 
 # r0784105
 import time
-from fastapi import Depends, FastAPI, Request
+from fastapi import Depends, FastAPI, Request, Response
+from prometheus_client import generate_latest
 from app.api.endpoints import auth, jobs, users, profile
 from app.core.config import settings
 from fastapi.staticfiles import StaticFiles
@@ -9,7 +10,8 @@ from fastapi.responses import FileResponse
 from app.db.create_db import init_db
 from app.core.security import verify_token
 from fastapi.middleware.cors import CORSMiddleware
-from app.utils.metrics import REQUEST_TIME, start_metrics_server
+from app.utils.metrics import REQUEST_TIME, start_metrics_server, login_request_counter
+from prometheus_client.exposition import choose_encoder
 
 
 # Create a metric to track time spent and requests made. 
@@ -56,9 +58,11 @@ def read_root():
     time.sleep(0.5)  # Simulate a delay
     return {"Hello": "World"}
 
+@login_request_counter.collect
 @app.get("/metrics")
-def get_metrics():
-    return "Metrics are exposed on a separate server."
+def metrics():
+    return Response(content=generate_latest(), media_type=choose_encoder("text/plain"))
+
 
 
 @app.get("/test")
