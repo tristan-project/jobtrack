@@ -10,3 +10,4 @@ pytest==7.0.0              # Testing framework
 pytest-asyncio==0.21.0     # Async support for pytest
 httpx==0.24.0              # HTTP client for making API requests (async)cd ..
 python-jose==3.3.0         # JWT token 
+prometheus_client==0.20.0  # Promethues client
