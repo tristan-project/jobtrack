@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Job</title>
+    <link rel="stylesheet" href="static/ccs/styles.css"> <!-- Link to your CSS file -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body>
+
+    <h1>Hompage</h1>
+
+    <a href="/users/create_users.html">make user</a>
+
+    <h1>PAgina 1 crear een job </h1>
+    <div x-data="jobForm()" class="container">
+        <h1>Create a Job</h1>
+        <form @submit.prevent="createJob">
+            <label for="title">Job Title:</label>
+            <input type="text" id="title" x-model="job.title" required>
+
+            <label for="description">Job Description:</label>
+            <textarea id="description" x-model="job.description" required></textarea>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" x-model="job.location" required>
+
+            <button type="submit">Create Job</button>
+        </form>
+
+        <div x-show="message" class="message" x-text="message"></div>
+    </div>
+
+    <script>
+        function jobForm() {
+            return {
+                job: {
+                    title: '',
+                    description: '',
+                    location: ''
+                },
+                message: '',
+                async createJob() {
+                    try {
+                        const response = await fetch('/jobs/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(this.job)
+                        });
+                        const result = await response.json();
+                        if (response.ok) {
+                            this.message = `Job created successfully! Job ID: ${result.id}`;
+                            this.job = { title: '', description: '', location: '' }; // Reset form
+                        } else {
+                            this.message = `Error: ${result.detail || 'Something went wrong'}`;
+                        }
+                    } catch (error) {
+                        this.message = `Error: ${error.message}`;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

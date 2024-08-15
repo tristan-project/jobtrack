@@ -11,14 +11,6 @@ router = APIRouter()
 def read_users_me(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return current_user
 
-@router.post("/users/", response_model=User)
-def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = create_user(db=db, user=user)
-    if db_user is None:
-        raise HTTPException(status_code=400, detail="User with this email already exists")
-    return db_user
-
-
 
 @router.get("/user-data", response_model=User)
 async def user_data(current_user: User = Depends(get_current_user)):
